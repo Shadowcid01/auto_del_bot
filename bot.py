@@ -3,7 +3,6 @@
 from aiohttp import web
 from plugins import web_server
 
-import pyromod.listen
 from pyrogram import Client
 from pyrogram.enums import ParseMode
 import sys
@@ -52,7 +51,7 @@ class Bot(Client):
                 sys.exit()
 
         # (Force Sub Channel logic for 2, 3, 4 remains the same...)
-        
+
         try:
             db_channel = await self.get_chat(CHANNEL_ID)
             self.db_channel = db_channel
@@ -72,6 +71,7 @@ class Bot(Client):
 | (_| (_) | |) | _|| _|| |__ | | >  <| _ \ (_) || | \__ \\
  \___\___/|___/|___|_| |____|___/_/\_\___/\___/ |_| |___/
                                                          
+
                                           """)
         self.username = usr_bot_me.username
         
@@ -81,22 +81,23 @@ class Bot(Client):
         bind_address = "0.0.0.0"
         await web.TCPSite(app, bind_address, PORT).start()
 
-    # Define the delete_file function to remove files
-    def delete_file(self, file_path):
+    # Define the delete_file function to remove files and update the database
+    async def delete_file(self, file_path, db_reference):
         if os.path.exists(file_path):
             os.remove(file_path)
             self.LOGGER(__name__).info(f"Deleted file: {file_path}")
+            # Logic to remove the reference from the database
+            # Example: await self.remove_from_db(db_reference)
         else:
             self.LOGGER(__name__).info(f"File {file_path} does not exist.")
 
     # Example: Send a file to a user and schedule deletion
-    async def send_file_to_user(self, chat_id, file_path):
-        # Send the file to the user (Example logic; replace with actual sending logic)
+    async def send_file_to_user(self, chat_id, file_path, db_reference):
         await self.send_document(chat_id, open(file_path, 'rb'))
 
-        # Schedule the deletion of the file after 1 hours
+        # Schedule the deletion of the file after 1 hour
         run_date = datetime.now() + timedelta(hours=1)
-        self.scheduler.add_job(self.delete_file, 'date', run_date=run_date, args=[file_path])
+        self.scheduler.add_job(self.delete_file, 'date', run_date=run_date, args=[file_path, db_reference])
 
     async def stop(self, *args):
         # Shut down the scheduler
