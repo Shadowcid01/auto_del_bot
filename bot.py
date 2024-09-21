@@ -50,7 +50,7 @@ class Bot(Client):
                 self.LOGGER(__name__).info("\nBot Stopped. Join https://t.me/+r-6ztnSy3yo3Mzc9 for support")
                 sys.exit()
 
-        # (Force Sub Channel logic for 2, 3, 4 remains the same...)
+        # (Force Sub Channel logic for 2, 3, 4,5,6 remains the same...)
 
         try:
             db_channel = await self.get_chat(CHANNEL_ID)
