@@ -128,8 +128,12 @@ async def not_joined(client: Client, message: Message):
         [
             InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 3", url=client.invitelink3),
             InlineKeyboardButton(text="ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 4", url=client.invitelink4),
+        ],
+        [
+            InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 5", url=client.invitelink3),
+            InlineKeyboardButton(text="ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 6", url=client.invitelink4),
         ]
-    ]
+      ]
     try:
         buttons.append(
             [
