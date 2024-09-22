@@ -40,19 +40,18 @@ class Bot(Client):
         # Set up Force Subscribe Channels
         for i in range(1, 7):  # Loop through channels 1 to 6
             channel_var = f'FORCE_SUB_CHANNEL_{i}'
-            channel_value = globals()[channel_var]
+            channel_value = globals().get(channel_var)  # Use globals().get to avoid KeyError if channel doesn't exist
             if channel_value:
                 try:
                     link = (await self.get_chat(channel_value)).invite_link
                     if not link:
                         await self.export_chat_invite_link(channel_value)
                         link = (await self.get_chat(channel_value)).invite_link
-                    self.invitelink = link
+                    setattr(self, f"invitelink{i}", link)  # Dynamically set invitelink1, invitelink2, etc.
                 except Exception as a:
                     self.LOGGER(__name__).warning(a)
                     self.LOGGER(__name__).warning(f"Bot can't Export Invite link from Force Sub Channel {i}!")
                     self.LOGGER(__name__).warning(f"Please double check the {channel_var} value and make sure the Bot is Admin in the channel with Invite Users via Link Permission, Current Value: {channel_value}")
-                    self.LOGGER(__name__).info("\nBot Stopped. Join https://t.me/+r-6ztnSy3yo3Mzc9 for support")
                     sys.exit()
 
         try:
@@ -73,9 +72,8 @@ class Bot(Client):
  / __/ _ \|   \| __| __| |  |_ _\ \/ / _ )/ _ \_   _/ __|
 | (_| (_) | |) | _|| _|| |__ | | >  <| _ \ (_) || | \__ \\
  \___\___/|___/|___|_| |____|___/_/\_\___/\___/ |_| |___/
-                                                         
+                                                         """)
 
-                                          """)
         self.username = usr_bot_me.username
         
         # Start the web server
